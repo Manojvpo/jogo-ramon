@@ -2,8 +2,7 @@ const canvas = document.getElementById('JogoCanvas');
 const ctx = canvas.getContext('2d');
 let gravidade = 0.5;
 let gameOver = false;
-let pontuacao = 0;  
-
+let pontuacao = 0;
 
 let pontuacaoMaxima = localStorage.getItem('pontuacaoMaxima') ? parseInt(localStorage.getItem('pontuacaoMaxima')) : 0;
 
@@ -27,11 +26,16 @@ let obstaculo = {
     x: canvas.width - 100,
     y: canvas.height - 100,
     largura: 30,
-    altura: 100,
+    altura: gerarAlturaObstaculo(),  // Inicializa com uma altura aleatória
     velocidade_x: 3, 
     aumentoVelocidade: 2,  
     passou: false 
 };
+
+function gerarAlturaObstaculo() {
+    // Gera uma altura aleatória entre 90 e 150 para o obstáculo
+    return Math.floor(Math.random() * (150 - 90 + 1)) + 90;
+}
 
 function desenharPersonagem() {
     ctx.fillStyle = 'red'; 
@@ -47,7 +51,6 @@ function atualizaPersonagem() {
     if (personagem.pulando) {
         personagem.y -= personagem.velocidade_y; 
         personagem.velocidade_y -= gravidade; 
-
         
         if (personagem.y >= canvas.height - personagem.altura) {
             personagem.y = canvas.height - personagem.altura;  
@@ -69,9 +72,10 @@ function desenharObstaculo() {
 
 function atualizarObstaculo() {
     obstaculo.x -= obstaculo.velocidade_x;  
-   
+
     if (obstaculo.x <= 0 - obstaculo.largura) {
         obstaculo.x = canvas.width;  
+        obstaculo.altura = gerarAlturaObstaculo();  // Atualiza a altura aleatória do obstáculo
         obstaculo.velocidade_x += obstaculo.aumentoVelocidade;  
         if (!obstaculo.passou) { 
             pontuacao++; 
@@ -94,7 +98,6 @@ function verificaColisao() {
         ctx.font = '50px Arial'; 
         ctx.fillText('SE FODEU', 50, 100);
 
-        
         if (pontuacao > pontuacaoMaxima) {
             pontuacaoMaxima = pontuacao;  
             localStorage.setItem('pontuacaoMaxima', pontuacaoMaxima); 
@@ -104,9 +107,7 @@ function verificaColisao() {
     }
 }
 
-
 function reiniciarJogo() {
-   
     personagem = {
         x: 100,
         y: canvas.height - 50,
@@ -119,7 +120,7 @@ function reiniciarJogo() {
         x: canvas.width - 100,
         y: canvas.height - 100,
         largura: 30,
-        altura: 100,
+        altura: gerarAlturaObstaculo(),  // Gera uma nova altura aleatória
         velocidade_x: 10,
         aumentoVelocidade: 2,
         passou: false
@@ -129,7 +130,6 @@ function reiniciarJogo() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     loop(); 
 }
-
 
 document.getElementById('reiniciarBtn').addEventListener('click', reiniciarJogo);
 
