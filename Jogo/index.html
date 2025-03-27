@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jogo Canva 2D</title>
+    <style>
+        body {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column; /* Adiciona a direção vertical */
+            height: 100vh;
+            margin: 0;
+        }
+        canvas {
+            background-image: url(data:image/jpeg;base64,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);
+           margin-top: 100px;
+           background-size: cover;
+        }
+        #reiniciarBtn {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 20px;
+            background-color: black;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        #reiniciarBtn:hover {
+            background-color: red;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="JogoCanvas" width="800" height="400"></canvas>
+    <button id="reiniciarBtn">Reiniciar Jogo</button>
+    <script src="script.js"></script>
+</body>
+</html>
